@@ -1,10 +1,10 @@
 <?php
 
-namespace App\\Http\\Controllers;
+namespace App\Http\Controllers;
 
-use App\\Models\\WorkPermit;
-use App\\Services\\WorkerWorkbook;
-use Illuminate\\Http\\Request;
+use App\Models\WorkPermit;
+use App\Services\WorkerWorkbook;
+use Illuminate\Http\Request;
 
 class WorkerExportController extends Controller
 {
@@ -20,7 +20,7 @@ class WorkerExportController extends Controller
             'to' => ['nullable', 'date_format:Y-m-d', ...($request->filled('from') ? ['after_or_equal:from'] : [])],
         ]);
 
-        if (!class_exists(\\ZipArchive::class)) {
+        if (!class_exists(\ZipArchive::class)) {
             return back()->withErrors([
                 'export' => 'Ekspor Excel membutuhkan ekstensi PHP zip. Aktifkan extension=zip pada php.ini Laragon, lalu restart Apache/PHP.',
             ]);
@@ -33,7 +33,7 @@ class WorkerExportController extends Controller
                 $query->where('created_at', '>=', $from . ' 00:00:00');
             })
             ->when($filters['to'] ?? null, function ($query, $to) {
-                $query->where('created_at', '<', \\Carbon\\CarbonImmutable::parse($to)->addDay()->startOfDay());
+                $query->where('created_at', '<', \Carbon\CarbonImmutable::parse($to)->addDay()->startOfDay());
             });
 
         $rows = (function () use ($permits) {
