@@ -118,65 +118,6 @@ class WorkerWorkbook
         }
     }
 
-    /**
-     * Create UTF-8 CSV that opens directly in Excel when ZipArchive is absent.
-     * Semicolon separators match common Indonesian Excel regional settings.
-     */
-    public function createCsv(iterable $rows): string
-    {
-        $path = tempnam(sys_get_temp_dir(), 'mitra-csv-');
-
-        if ($path === false) {
-            throw new \RuntimeException('File CSV sementara tidak dapat dibuat.');
-        }
-
-        $handle = fopen($path, 'wb');
-
-        if ($handle === false) {
-            @unlink($path);
-            throw new \RuntimeException('File CSV sementara tidak dapat dibuka.');
-        }
-
-        try {
-            $this->writeAll($handle, "\xEF\xBB\xBF");
-
-            foreach ($rows as $row) {
-                $cells = array_map(
-                    fn ($value): string => $this->safeCsvCell($value),
-                    array_values($row)
-                );
-
-                if (fputcsv($handle, $cells, ';', '"', '') === false) {
-                    throw new \RuntimeException('Baris data gagal ditulis ke file CSV.');
-                }
-            }
-
-            if (!fflush($handle)) {
-                throw new \RuntimeException('File CSV gagal diselesaikan.');
-            }
-
-            fclose($handle);
-
-            return $path;
-        } catch (\Throwable $exception) {
-            fclose($handle);
-            @unlink($path);
-            throw $exception;
-        }
-    }
-
-    private function safeCsvCell(mixed $value): string
-    {
-        $cell = (string) ($value ?? '');
-
-        // Prevent CSV formula injection from user-controlled names and text.
-        if (preg_match('/^[\x00-\x20]*[=+\-@]/', $cell) === 1) {
-            return "'" . $cell;
-        }
-
-        return $cell;
-    }
-
     /** Write the complete string or fail rather than returning a corrupt file. */
     private function writeAll($stream, string $contents): void
     {
