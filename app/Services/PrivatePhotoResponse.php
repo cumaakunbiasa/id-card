@@ -51,14 +51,26 @@ class PrivatePhotoResponse
             $sourceHeight
         );
 
-        ob_start();
-        $encoded = imagepng($normalized, null, 6);
-        $png = ob_get_clean();
+        // Write to a temporary file instead of PHP output buffering.
+        // This prevents stray output bytes from corrupting the PNG signature.
+        $temporaryPath = tempnam(sys_get_temp_dir(), 'private-photo-');
+        abort_unless(is_string($temporaryPath), 500, 'Tidak dapat menyiapkan file foto sementara.');
 
+        $encoded = imagepng($normalized, $temporaryPath, 6);
+        $png = $encoded ? file_get_contents($temporaryPath) : false;
+
+        @unlink($temporaryPath);
         imagedestroy($source);
         imagedestroy($normalized);
 
-        abort_unless($encoded && is_string($png) && $png !== '', 500, 'Foto gagal diproses.');
+        abort_unless(
+            $encoded
+                && is_string($png)
+                && str_starts_with($png, "\x89PNG\r\n\x1A\n")
+                && str_ends_with($png, "\x00\x00\x00\x00IEND\xAE\x42\x60\x82"),
+            500,
+            'Foto gagal diproses menjadi PNG yang valid.'
+        );
 
         return response($png, 200, [
             'Content-Type' => 'image/png',
