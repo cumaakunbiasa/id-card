@@ -24,7 +24,7 @@ $roles = ['humas' => 'Humas', 'k3' => 'K3', 'keamanan' => 'Keamanan'];
 @if($member->photo_path)
 <div style="margin:12px 0">
 <strong style="display:block;margin-bottom:8px">Foto pekerja</strong>
-<img src="{{ route('mitra.photo', $member) }}" alt="Foto {{ $member->full_name }}" loading="lazy" style="display:block;width:150px;height:190px;object-fit:cover;border-radius:10px;border:1px solid #dbe3ec">
+<img src="{{ route('permits.photo', $member) }}" alt="Foto {{ $member->full_name }}" loading="lazy" style="display:block;width:150px;height:190px;object-fit:cover;border-radius:10px;border:1px solid #dbe3ec">
 </div>
 @else
 <p class="ui-footer-note">Foto belum tersedia.</p>
