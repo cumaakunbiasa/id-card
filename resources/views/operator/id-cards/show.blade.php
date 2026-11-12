@@ -425,7 +425,7 @@
             </header>
 
             @if ($workPermit->photo_path)
-            <img class="portrait" style="border-color: {{ $headerColor }};" src="{{ route('mitra.photo', $workPermit) }}" alt="Foto {{ $workPermit->full_name }}">
+            <img class="portrait" style="border-color: {{ $headerColor }};" src="{{ route('permits.photo', $workPermit) }}" alt="Foto {{ $workPermit->full_name }}">
             @else
             <div class="portrait no-photo">Foto belum tersedia<br>Data pengajuan lama</div>
             @endif
