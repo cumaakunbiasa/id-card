@@ -57,7 +57,7 @@ it('allows the owner to view their own photo', function () {
     $response = $this->actingAs($owner)->get(route('mitra.photo', $permit));
 
     $response->assertOk()->assertHeader('Content-Type', 'image/png');
-    expect(substr($response->getContent(), 0, 3))->toBe("\x89PNG\r\n\x1A\n");
+    expect(substr($response->getContent(), 0, 8))->toBe("\x89PNG\r\n\x1A\n");
 });
 
 it('prevents another applicant from viewing someone elses photo', function () {
@@ -90,7 +90,7 @@ it('allows operators to view approved worker photos', function () {
     $response = $this->actingAs($operator)->get(route('permits.photo', $permit));
 
     $response->assertOk()->assertHeader('Content-Type', 'image/png');
-    expect(substr($response->getContent(), 0, 3))->toBe("\x89PNG\r\n\x1A\n")
+    expect(substr($response->getContent(), 0, 8))->toBe("\x89PNG\r\n\x1A\n")
         ->and(getimagesizefromstring($response->getContent()))->not->toBeFalse();
 });
 
@@ -125,7 +125,7 @@ it('shows the private worker photo on permit details for Humas, K3, and Security
     $response = $this->get(route('permits.photo', $permit));
 
     $response->assertOk()->assertHeader('Content-Type', 'image/png');
-    expect(substr($response->getContent(), 0, 3))->toBe("\x89PNG\r\n\x1A\n");
+    expect(substr($response->getContent(), 0, 8))->toBe("\x89PNG\r\n\x1A\n");
 })->with([
     'Humas' => 'humas',
     'K3' => 'k3',
