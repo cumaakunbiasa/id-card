@@ -30,11 +30,7 @@
 <div x-show="camera" x-cloak><video x-ref="video" autoplay muted playsinline style="width:100%;max-width:320px;border-radius:10px" aria-label="Pratinjau kamera"></video><div class="ui-approval-actions"><button type="button" class="ui-button ui-button-primary" @click="capture()" :disabled="busy">Ambil foto</button><button type="button" class="ui-button ui-button-outline" @click="stop()">Tutup kamera</button></div></div>
 <img x-show="preview" x-cloak :src="preview" alt="Pratinjau foto" style="width:100px;height:130px;object-fit:cover;border-radius:10px">
 </div>
-<aside class="ui-card" style="padding:16px;background:#fff8e7;border:1px solid #f1d28a">
-<h3 style="margin:0 0 10px;font-weight:800;color:#7c4a03">Ketentuan Foto</h3>
-<ul style="margin:0;padding-left:20px;display:grid;gap:8px;color:#543b18"><li><strong>HARUS MENGGUNAKAN HELM DAN WEARPACK/ROMPI.</strong></li><li><strong>MELEPAS KACAMATA.</strong></li></ul>
-<p style="margin:12px 0 0;color:#7c2d12;font-size:13px;line-height:1.6">Setiap foto yang tidak sesuai dengan persyaratan dan ketentuan yang berlaku tidak akan mendapatkan persetujuan (approval) dari User Approval.</p>
-</aside>
+
 </div></fieldset></template>
 <p>Foto hanya JPG/JPEG/PNG. Total foto maksimal 100 MB per pengajuan. Buka kamera untuk mengambil foto langsung, atau upload dari perangkat. Izinkan akses kamera saat diminta; gunakan localhost atau HTTPS.</p>
 <button class="ui-button ui-button-primary" type="submit" :disabled="submitting" x-text="submitting ? 'Mengirim…' : 'Kirim Pengajuan ID Card'">Kirim Pengajuan ID Card</button>
