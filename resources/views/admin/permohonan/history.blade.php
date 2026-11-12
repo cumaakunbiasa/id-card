@@ -11,7 +11,25 @@
         $roles = ['humas' => 'Humas', 'k3' => 'K3', 'keamanan' => 'Keamanan'];
     @endphp
     <div class="ui-page">
-        <a href="{{ route('admin.workers.export') }}" class="ui-button ui-button-primary">Export semua data pekerja ke Excel</a>
+        <section class="ui-card" style="margin-bottom:16px">
+            <form method="GET" action="{{ route('admin.workers.export') }}">
+                <h2 class="ui-section-title">Ekspor Data ke Excel</h2>
+                <div class="ui-detail-grid">
+                    <div>
+                        <label class="ui-label" for="export-from">Didaftarkan mulai tanggal</label>
+                        <input id="export-from" name="from" type="date" value="{{ old('from', request('from')) }}" class="ui-input">
+                    </div>
+                    <div>
+                        <label class="ui-label" for="export-to">Didaftarkan sampai tanggal</label>
+                        <input id="export-to" name="to" type="date" value="{{ old('to', request('to')) }}" class="ui-input">
+                    </div>
+                </div>
+                <p class="ui-section-note">Kosongkan tanggal untuk mengekspor seluruh data. Rentang dihitung berdasarkan tanggal pendaftaran, termasuk seluruh data pada tanggal akhir.</p>
+                <div class="ui-approval-actions">
+                    <button type="submit" class="ui-button ui-button-primary">Ekspor Excel</button>
+                </div>
+            </form>
+        </section>
         @if ($errors->any())
             <div class="ui-alert ui-alert-error" role="alert">@foreach ($errors->all() as $error)<p>{{ $error }}</p>@endforeach</div>
         @endif
