@@ -16,13 +16,13 @@
         </div>
         <img x-show="preview" x-cloak :src="preview" alt="Pratinjau foto yang dipilih" style="width:100px;height:130px;object-fit:cover;border-radius:10px">
     </div>
-    <aside class="ui-card" style="padding:16px;background:#fff8e7;border:1px solid #ffffff">
-        <h3 style="margin:0 0 10px;font-weight:800;color:#7c4a03">Ketentuan Foto</h3>
-        <ul style="margin:0;padding-left:20px;display:grid;gap:8px;color:#543b18">
+    <aside class="ui-card" style="background:#ffffff;border:1px solid #e5e7eb">
+        <h3 style="margin:0 0 10px;font-weight:800;color:#1f2937">Ketentuan Foto</h3>
+        <ul style="margin:0;padding-left:20px;display:grid;gap:8px;color:#374151">
             <li><strong>HARUS MENGGUNAKAN HELM DAN WEARPACK/ROMPI.</strong></li>
             <li><strong>MELEPAS KACAMATA.</strong></li>
         </ul>
-        <p style="margin:12px 0 0;color:#7c2d12;font-size:13px;line-height:1.6">
+        <p style="margin:12px 0 0;color:#4b5563;font-size:13px;line-height:1.6">
             Setiap foto yang tidak sesuai dengan persyaratan dan ketentuan yang berlaku tidak akan mendapatkan persetujuan (approval) dari User Approval.
         </p>
     </aside>
