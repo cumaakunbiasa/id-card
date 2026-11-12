@@ -137,7 +137,7 @@ it('writes formula-like names as Excel strings', function () {
 });
 
 it('creates an Excel-compatible UTF-8 CSV fallback with safe spreadsheet cells', function () {
-    $path = (new App\\Services\\WorkerWorkbook())->createCsv([
+    $path = (new App\Services\WorkerWorkbook())->createCsv([
         ['Nama', 'Perusahaan'],
         ['=1+1', 'PT; "Contoh"'],
         ['Pekerja Biasa', 'PT Contoh Energi'],
@@ -147,7 +147,7 @@ it('creates an Excel-compatible UTF-8 CSV fallback with safe spreadsheet cells',
         $csv = file_get_contents($path);
 
         expect($csv)->toBeString()
-            ->and(substr($csv, 0, 3))->toBe("\\xEF\\xBB\\xBF")
+            ->and(substr($csv, 0, 3))->toBe("\xEF\xBB\xBF")
             ->and($csv)->toContain("'=1+1")
             ->and($csv)->toContain('"PT; ""Contoh"""')
             ->and($csv)->toContain('Pekerja Biasa');
