@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use App\Models\WorkPermit;
 use App\Services\WorkLocationZoneResolver;
+use App\Services\PrivatePhotoResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -205,15 +206,6 @@ class WorkPermitController extends Controller
 
         abort_unless($path, 404);
 
-        $disk = Storage::disk('local');
-
-        abort_unless($disk->exists($path), 404);
-
-        $absolutePath = $disk->path($path);
-
-        return response()->file($absolutePath, [
-            'Cache-Control' => 'private, no-store',
-            'X-Content-Type-Options' => 'nosniff',
-        ]);
+        return app(PrivatePhotoResponse::class)->make($path);
     }
 }
