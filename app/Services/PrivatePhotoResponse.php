@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 class PrivatePhotoResponse
 {
     /**
-     * Decode a privately stored upload and re-encode it as a browser-safe JPEG.
+     * Decode a privately stored upload and re-encode it as a browser-safe PNG.
      * Resizing keeps memory use bounded for large source photos.
      */
     public function make(string $path): Response
@@ -18,7 +18,7 @@ class PrivatePhotoResponse
         abort_unless($disk->exists($path), 404);
         abort_unless(
             function_exists('imagecreatefromstring')
-                && function_exists('imagejpeg')
+                && function_exists('imagepng')
                 && function_exists('imagecopyresampled'),
             500,
             'Ekstensi GD PHP diperlukan untuk memproses foto.'
@@ -52,17 +52,17 @@ class PrivatePhotoResponse
         );
 
         ob_start();
-        $encoded = imagejpeg($normalized, null, 92);
-        $jpeg = ob_get_clean();
+        $encoded = imagepng($normalized, null, 6);
+        $png = ob_get_clean();
 
         imagedestroy($source);
         imagedestroy($normalized);
 
-        abort_unless($encoded && is_string($jpeg) && $jpeg !== '', 500, 'Foto gagal diproses.');
+        abort_unless($encoded && is_string($png) && $png !== '', 500, 'Foto gagal diproses.');
 
-        return response($jpeg, 200, [
-            'Content-Type' => 'image/jpeg',
-            'Content-Length' => (string) strlen($jpeg),
+        return response($png, 200, [
+            'Content-Type' => 'image/png',
+            'Content-Length' => (string) strlen($png),
             'Cache-Control' => 'private, no-store',
             'X-Content-Type-Options' => 'nosniff',
         ]);
