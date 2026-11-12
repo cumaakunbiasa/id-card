@@ -8,7 +8,7 @@
 @endforeach
 </section>
 @if($pending !== null)
-<div class="ui-task-banner"><div><strong>{{ $pending }} orang menunggu keputusan bagian Anda</strong><p>Buka kelompok pekerjaan untuk memeriksa PIC dan pekerja satu per satu.</p></div><a class="ui-button ui-button-primary" href="{{ route('admin.permohonan.index') }}">Periksa antrean</a></div>
+<div class="ui-task-banner"><div><strong>{{ $pending }} orang menunggu keputusan bagian Anda</strong><p>Buka kelompok pekerjaan untuk memeriksa PIC dan pekerja satu per satu.</p></div></div>
 @endif
 <section class="ui-panel"><div class="ui-list-row"><h2 class="ui-section-title">Pekerjaan terbaru</h2></div>
 @forelse($recentPermits as $permit)
