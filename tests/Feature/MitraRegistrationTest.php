@@ -155,3 +155,22 @@ it('creates an Excel-compatible UTF-8 CSV fallback with safe spreadsheet cells',
         @unlink($path);
     }
 });
+
+it('returns an Excel download or Excel-compatible CSV to an authorized reviewer', function () {
+    $reviewer = User::factory()->create(['role' => 'humas']);
+
+    $response = $this->actingAs($reviewer)
+        ->get(route('admin.workers.export'))
+        ->assertOk();
+
+    if (class_exists(ZipArchive::class)) {
+        $response->assertHeader(
+            'Content-Type',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        );
+        expect($response->headers->get('Content-Disposition'))->toContain('.xlsx');
+    } else {
+        $response->assertHeader('Content-Type', 'text/csv; charset=UTF-8');
+        expect($response->headers->get('Content-Disposition'))->toContain('.csv');
+    }
+});
