@@ -53,6 +53,9 @@ a { transition: color .18s ease, background-color .18s ease, border-color .18s e
 .app-page-header-inner { width: min(1180px, calc(100% - 40px)); margin: 0 auto; padding: 26px 0 24px; }
 .app-main { width: min(1180px, calc(100% - 40px)); margin: 0 auto; padding: 30px 0 60px; }
 .ui-page { display: grid; gap: 24px; }
+.ui-page-pemohon { gap: 14px; }
+.ui-process-card { padding: 22px; }
+.ui-process-card .ui-process-step { background: #f8fbff; }
 .ui-stack { display: grid; gap: 18px; }
 .ui-heading-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
 .ui-eyebrow { margin: 0 0 7px; color: var(--brand); font-size: 10px; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
