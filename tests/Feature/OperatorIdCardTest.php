@@ -186,7 +186,7 @@ it('shows the company, job title, location, unique id, and date-only schedule in
         ->assertSee('30/10/2026')
         ->assertDontSee('08:00')
         ->assertDontSee('17:30')
-        ->assertSee(route('mitra.photo', $permit));
+        ->assertSee(route('permits.photo', $permit));
 });
 
 it('marks an approved card as printed and moves it to the printed cards list', function () {
