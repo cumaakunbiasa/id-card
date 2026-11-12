@@ -112,9 +112,9 @@ it('shows the private worker photo on permit details for Humas, K3, and Security
         ->get(route('permits.show', $permit))
         ->assertOk()
         ->assertSee('Foto pekerja')
-        ->assertSee(route('mitra.photo', $permit), false);
+        ->assertSee(route('permits.photo', $permit), false);
 
-    $this->get(route('mitra.photo', $permit))->assertOk();
+    $this->get(route('permits.photo', $permit))->assertOk();
 })->with([
     'Humas' => 'humas',
     'K3' => 'k3',
