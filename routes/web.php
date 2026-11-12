@@ -152,7 +152,7 @@ Route::get('/permohonan/{workPermit}/foto', [
 |--------------------------------------------------------------------------
 */
 
-Route::get('/mitra/{workPermit}/foto', [\App\Http\Controllers\MitraPhotoController::class, 'show'])
+Route::get('/mitra/{workPermit}/foto', [WorkPermitController::class, 'photo'])
     ->middleware(['auth', 'verified'])->name('mitra.photo');
 Route::get('/admin/pekerja/export', [\App\Http\Controllers\WorkerExportController::class, 'index'])
     ->middleware(['auth', 'verified', 'role:humas,k3,keamanan'])->name('admin.workers.export');
