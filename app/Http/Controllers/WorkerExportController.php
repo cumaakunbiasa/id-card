@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\\Http\\Controllers;
 
-use App\Models\WorkPermit;
-use App\Services\WorkerWorkbook;
-use Illuminate\Http\Request;
+use App\\Models\\WorkPermit;
+use App\\Services\\WorkerWorkbook;
+use Illuminate\\Http\\Request;
 
 class WorkerExportController extends Controller
 {
@@ -15,13 +15,28 @@ class WorkerExportController extends Controller
             403
         );
 
-        if (!class_exists(\ZipArchive::class)) {
+        $filters = $request->validate([
+            'from' => ['nullable', 'date_format:Y-m-d'],
+            'to' => ['nullable', 'date_format:Y-m-d', ...($request->filled('from') ? ['after_or_equal:from'] : [])],
+        ]);
+
+        if (!class_exists(\\ZipArchive::class)) {
             return back()->withErrors([
                 'export' => 'Ekspor Excel membutuhkan ekstensi PHP zip. Aktifkan extension=zip pada php.ini Laragon, lalu restart Apache/PHP.',
             ]);
         }
 
-        $rows = (function () {
+        // Gunakan tanggal pendaftaran agar konsisten dengan filter Riwayat Pendaftaran.
+        $permits = WorkPermit::query()
+            ->with('approvals')
+            ->when($filters['from'] ?? null, function ($query, $from) {
+                $query->where('created_at', '>=', $from . ' 00:00:00');
+            })
+            ->when($filters['to'] ?? null, function ($query, $to) {
+                $query->where('created_at', '<', \\Carbon\\CarbonImmutable::parse($to)->addDay()->startOfDay());
+            });
+
+        $rows = (function () use ($permits) {
             yield [
                 'Nomor',
                 'Kelompok',
@@ -41,7 +56,7 @@ class WorkerExportController extends Controller
                 'Didaftarkan',
             ];
 
-            foreach (WorkPermit::with('approvals')->lazyById(200) as $permit) {
+            foreach ($permits->lazyById(200) as $permit) {
                 $zoneLabel = $permit->zone_key
                     ? (config('mitra.zones.' . $permit->zone_key . '.label') ?? 'Tidak diketahui')
                     : 'Belum ditentukan';
@@ -68,6 +83,13 @@ class WorkerExportController extends Controller
         })();
 
         $fileBase = 'mitra-kerja-' . now()->format('Ymd-His');
+        if (($filters['from'] ?? null) && ($filters['to'] ?? null)) {
+            $fileBase .= '-' . $filters['from'] . '-sampai-' . $filters['to'];
+        } elseif ($filters['from'] ?? null) {
+            $fileBase .= '-mulai-' . $filters['from'];
+        } elseif ($filters['to'] ?? null) {
+            $fileBase .= '-sampai-' . $filters['to'];
+        }
 
         return response()->download(
             $workbook->create($rows),
