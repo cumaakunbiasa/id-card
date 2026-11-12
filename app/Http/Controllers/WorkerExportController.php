@@ -15,6 +15,12 @@ class WorkerExportController extends Controller
             403
         );
 
+        if (!class_exists(\ZipArchive::class)) {
+            return back()->withErrors([
+                'export' => 'Ekspor Excel membutuhkan ekstensi PHP zip. Aktifkan extension=zip pada php.ini Laragon, lalu restart Apache/PHP.',
+            ]);
+        }
+
         $rows = (function () {
             yield [
                 'Nomor',
@@ -63,23 +69,11 @@ class WorkerExportController extends Controller
 
         $fileBase = 'mitra-kerja-' . now()->format('Ymd-His');
 
-        if (class_exists(\ZipArchive::class)) {
-            return response()->download(
-                $workbook->create($rows),
-                $fileBase . '.xlsx',
-                [
-                    'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                    'Cache-Control' => 'private, no-store',
-                ]
-            )->deleteFileAfterSend(true);
-        }
-
-        // Excel can open this UTF-8 CSV when the PHP zip extension is unavailable.
         return response()->download(
-            $workbook->createCsv($rows),
-            $fileBase . '.csv',
+            $workbook->create($rows),
+            $fileBase . '.xlsx',
             [
-                'Content-Type' => 'text/csv; charset=UTF-8',
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                 'Cache-Control' => 'private, no-store',
             ]
         )->deleteFileAfterSend(true);
