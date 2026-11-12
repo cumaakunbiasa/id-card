@@ -8,10 +8,15 @@ function createSecurityPhotoPermit(
     User $owner,
     string $status = 'ditinjau'
 ): WorkPermit {
-    Storage::disk('local')->put(
-        'mitra/security/photo.jpg',
-        'fake-image-content'
-    );
+    $image = imagecreatetruecolor(8, 8);
+    $background = imagecolorallocate($image, 30, 90, 160);
+    imagefill($image, 0, 0, $background);
+    ob_start();
+    imagejpeg($image);
+    $jpeg = ob_get_clean();
+    imagedestroy($image);
+
+    Storage::disk('local')->put('mitra/security/photo.jpg', $jpeg);
 
     return $owner->workPermits()->create([
         'full_name' => 'Pekerja Pengujian',
@@ -49,9 +54,10 @@ it('allows the owner to view their own photo', function () {
 
     $permit = createSecurityPhotoPermit($owner);
 
-    $this->actingAs($owner)
-        ->get(route('mitra.photo', $permit))
-        ->assertOk();
+    $response = $this->actingAs($owner)->get(route('mitra.photo', $permit));
+
+    $response->assertOk()->assertHeader('Content-Type', 'image/jpeg');
+    expect(substr($response->getContent(), 0, 3))->toBe("\xFF\xD8\xFF");
 });
 
 it('prevents another applicant from viewing someone elses photo', function () {
@@ -114,7 +120,10 @@ it('shows the private worker photo on permit details for Humas, K3, and Security
         ->assertSee('Foto pekerja')
         ->assertSee(route('permits.photo', $permit), false);
 
-    $this->get(route('permits.photo', $permit))->assertOk();
+    $response = $this->get(route('permits.photo', $permit));
+
+    $response->assertOk()->assertHeader('Content-Type', 'image/jpeg');
+    expect(substr($response->getContent(), 0, 3))->toBe("\xFF\xD8\xFF");
 })->with([
     'Humas' => 'humas',
     'K3' => 'k3',
