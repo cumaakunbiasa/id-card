@@ -1,0 +1,6 @@
+; 100 MB photo budget plus multipart overhead. Reload PHP after changes.
+upload_max_filesize = 100M
+post_max_size = 110M
+; PHP requires finite infrastructure limits; these are not an application cap.
+max_file_uploads = 10000
+max_input_vars = 30000

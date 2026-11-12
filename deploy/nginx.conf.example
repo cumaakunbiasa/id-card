@@ -1,0 +1,27 @@
+# Template for a PHP-FPM host behind a TLS-terminating reverse proxy.
+# Replace domain, root, and PHP-FPM socket with the actual server values.
+# Restrict this HTTP listener to your trusted proxy/network.
+# For direct public hosting, configure a valid certificate and HTTPS listener first.
+server {
+    listen 80;
+    server_name izin.example.com;
+    root /var/www/izin-kerja/public;
+    index index.php;
+    charset utf-8;
+    server_tokens off;
+    client_max_body_size 110m;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+    location = /index.php {
+        include fastcgi_params;
+        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $realpath_root/index.php;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
+        fastcgi_hide_header X-Powered-By;
+    }
+    location ~ \.php$ { return 404; }
+    location ~ /\.(?!well-known).* { deny all; }
+    location ~* \.(?:env|sqlite|sql|log|bak)$ { deny all; }
+}
