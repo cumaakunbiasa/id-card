@@ -87,9 +87,11 @@ it('allows operators to view approved worker photos', function () {
 
     $permit = createSecurityPhotoPermit($owner, 'diizinkan');
 
-    $this->actingAs($operator)
-        ->get(route('permits.photo', $permit))
-        ->assertOk();
+    $response = $this->actingAs($operator)->get(route('permits.photo', $permit));
+
+    $response->assertOk()->assertHeader('Content-Type', 'image/jpeg');
+    expect(substr($response->getContent(), 0, 3))->toBe("\xFF\xD8\xFF")
+        ->and(getimagesizefromstring($response->getContent()))->not->toBeFalse();
 });
 
 it('prevents operators from viewing unapproved worker photos', function () {
