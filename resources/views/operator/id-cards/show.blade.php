@@ -413,8 +413,8 @@
             @endif
         </section>
 
-        <article class="card" @style(['--zone'=> $headerColor, '--zone-ink' => $headerTextColor])>
-            <header class="top">
+        <article class="card" style="--zone: {{ $headerColor }}; --zone-ink: {{ $headerTextColor }};">
+            <header class="top" style="background-color: {{ $headerColor }}; color: {{ $headerTextColor }};">
                 <div class="brand">
                     <img class="logo" src="{{ asset(config('mitra.logo')) }}" alt="Logo perusahaan">
                     <div class="brand-copy">
@@ -425,7 +425,7 @@
             </header>
 
             @if ($workPermit->photo_path)
-            <img class="portrait" src="{{ route('permits.photo', $workPermit) }}" alt="Foto {{ $workPermit->full_name }}">
+            <img class="portrait" style="border-color: {{ $headerColor }};" src="{{ route('permits.photo', $workPermit) }}" alt="Foto {{ $workPermit->full_name }}">
             @else
             <div class="portrait no-photo">Foto belum tersedia<br>Data pengajuan lama</div>
             @endif
@@ -451,7 +451,7 @@
                     {{ $workPermit->work_location }}
                 </div>
             </div>
-            <div class="bottom"></div>
+            <div class="bottom" style="background-color: {{ $headerColor }};"></div>
         </article>
 
         <p class="note no-print">Saat mencetak, aktifkan background graphics, gunakan skala 100%, dan matikan header/footer browser. Ukuran cetak kartu B1: 55 × 85 mm.</p>
