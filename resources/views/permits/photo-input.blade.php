@@ -16,7 +16,7 @@
         </div>
         <img x-show="preview" x-cloak :src="preview" alt="Pratinjau foto yang dipilih" style="width:100px;height:130px;object-fit:cover;border-radius:10px">
     </div>
-    <aside class="ui-card" style="background:#ffffff;border:1px solid #e5e7eb">
+    <aside class="photo-requirements">
         <h3 style="margin:0 0 10px;font-weight:800;color:#1f2937">Ketentuan Foto</h3>
         <ul style="margin:0;padding-left:20px;display:grid;gap:8px;color:#374151">
             <li><strong>HARUS MENGGUNAKAN HELM DAN WEARPACK/ROMPI.</strong></li>
