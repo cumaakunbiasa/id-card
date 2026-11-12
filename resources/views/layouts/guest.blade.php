@@ -13,8 +13,8 @@
     <a href="#auth-form" class="skip-link">Lewati ke formulir</a>
     <main class="auth-shell">
         <section class="auth-intro">
-            <a href="{{ url('/') }}" class="auth-brand">SISTEM PENGAJUAN ID CARD <span>Portal pengajuan dan penerbitan ID Card</span></a>
-            <div><p class="auth-kicker">Administrasi kerja, lebih terarah</p><h1>Satu pengajuan.<br>Proses yang jelas.</h1><p>Ajukan izin, pantau pemeriksaan, dan telusuri keputusan Humas, K3, serta Keamanan dalam satu tempat.</p></div>
+            <a href="{{ url('/') }}" class="auth-brand">SISTEM PENGAJUAN ID CARD <span>Portal Pengajuan dan Penerbitan ID Card</span></a>
+            <div><p class="auth-kicker">DIGITALISASI PENGELOLAAN KEAMANAN</p><h1>Pengajuan id card pekerja.</h1><p>Pembuatan kartu identitas pekerja secara digital, melalui prosedur pemeriksaan dari Keamanan, Humas, dan K3L</p></div>
             <ol class="auth-steps"><li><span>01</span> Lengkapi data pekerjaan</li><li><span>02</span> Tinjauan tiga bagian</li><li><span>03</span> Pantau hasil &amp; riwayat</li></ol>
         </section>
         <section class="auth-panel" id="auth-form" tabindex="-1">
