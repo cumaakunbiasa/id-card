@@ -136,41 +136,24 @@ it('writes formula-like names as Excel strings', function () {
     } finally { unlink($path); }
 });
 
-it('creates an Excel-compatible UTF-8 CSV fallback with safe spreadsheet cells', function () {
-    $path = (new App\Services\WorkerWorkbook())->createCsv([
-        ['Nama', 'Perusahaan'],
-        ['=1+1', 'PT; "Contoh"'],
-        ['Pekerja Biasa', 'PT Contoh Energi'],
-    ]);
-
-    try {
-        $csv = file_get_contents($path);
-
-        expect($csv)->toBeString()
-            ->and(substr($csv, 0, 3))->toBe("\xEF\xBB\xBF")
-            ->and($csv)->toContain("'=1+1")
-            ->and($csv)->toContain('"PT; ""Contoh"""')
-            ->and($csv)->toContain('Pekerja Biasa');
-    } finally {
-        @unlink($path);
-    }
-});
-
-it('returns an Excel download or Excel-compatible CSV to an authorized reviewer', function () {
+it('returns only an XLSX download to an authorized reviewer', function () {
     $reviewer = User::factory()->create(['role' => 'humas']);
 
     $response = $this->actingAs($reviewer)
-        ->get(route('admin.workers.export'))
-        ->assertOk();
+        ->get(route('admin.workers.export'));
 
-    if (class_exists(ZipArchive::class)) {
-        $response->assertHeader(
+    if (!class_exists(ZipArchive::class)) {
+        $response->assertRedirect()
+            ->assertSessionHasErrors('export');
+
+        return;
+    }
+
+    $response->assertOk()
+        ->assertHeader(
             'Content-Type',
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         );
-        expect($response->headers->get('Content-Disposition'))->toContain('.xlsx');
-    } else {
-        $response->assertHeader('Content-Type', 'text/csv; charset=UTF-8');
-        expect($response->headers->get('Content-Disposition'))->toContain('.csv');
-    }
+
+    expect($response->headers->get('Content-Disposition'))->toContain('.xlsx');
 });
