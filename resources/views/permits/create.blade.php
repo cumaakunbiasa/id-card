@@ -31,8 +31,8 @@
 <img x-show="preview" x-cloak :src="preview" alt="Pratinjau foto" style="width:100px;height:130px;object-fit:cover;border-radius:10px">
 </div>
 <aside class="photo-requirements" style="text-align:left">
-        <h3 style="margin:0 0 10px;font-weight:800;color:#1f2937;text-align:left;width:100%">* Ketentuan Foto</h3>
-<ul style="margin:0;padding-left:20px;display:grid;gap:8px;color:#374151;text-align:left"><li><strong>HARUS MENGGUNAKAN HELM DAN WEARPACK/ROMPI.</strong></li><li><strong>MELEPAS KACAMATA.</strong></li></ul>
+        <h3 style="margin:0 0 7px;font-size:13px;line-height:1.5;font-weight:700;color:#1f2937;text-align:left;width:100%">* Ketentuan Foto</h3>
+<ul style="margin:0;padding:0;list-style:none;display:grid;gap:4px;color:#374151;text-align:left;font-size:12px;line-height:1.6"><li>- Harus menggunakan helm dan wearpack/rompi.</li><li>- Melepas kacamata.</li></ul>
 <p style="margin:12px 0 0;color:#4b5563;font-size:13px;line-height:1.6;text-align:left">Setiap foto yang tidak sesuai dengan persyaratan dan ketentuan yang berlaku tidak akan mendapatkan persetujuan (approval) dari User Approval.</p>
 </aside>
 </div>
