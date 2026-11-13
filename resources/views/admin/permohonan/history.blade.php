@@ -21,7 +21,7 @@
                         <option value="all" @selected(old('period', request('period', 'range')) === 'all')>Semua periode (dari awal sampai akhir)</option>
                     </select>
                 </div>
-                <div id="export-date-fields" class="ui-detail-grid" @if (old('period', request('period', 'range')) === 'all') hidden @endif>
+                <div id="export-date-fields" class="ui-detail-grid" @if (old('period', request('period', 'range')) === 'all') hidden style="display: none;" @endif>
                     <div>
                         <label class="ui-label" for="export-from">Didaftarkan mulai tanggal</label>
                         <input id="export-from" name="from" type="date" value="{{ old('from', request('from')) }}" class="ui-input" data-export-date>
@@ -46,6 +46,7 @@
                         const useDateRange = periodSelect.value === 'range';
 
                         dateFields.hidden = !useDateRange;
+                        dateFields.style.display = useDateRange ? '' : 'none';
 
                         dateInputs.forEach(function (input) {
                             input.disabled = !useDateRange;
