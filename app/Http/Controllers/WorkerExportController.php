@@ -32,10 +32,10 @@ class WorkerExportController extends Controller
         // Gunakan tanggal pendaftaran agar konsisten dengan filter Riwayat Pendaftaran.
         $permits = WorkPermit::query()
             ->with('approvals')
-            ->when($filters['from'] ?? null, function ($query, $from) {
+            ->when($useDateRange && ($filters['from'] ?? null), function ($query, $from) {
                 $query->where('created_at', '>=', $from . ' 00:00:00');
             })
-            ->when($filters['to'] ?? null, function ($query, $to) {
+            ->when($useDateRange && ($filters['to'] ?? null), function ($query, $to) {
                 $query->where('created_at', '<', \Carbon\CarbonImmutable::parse($to)->addDay()->startOfDay());
             });
 
