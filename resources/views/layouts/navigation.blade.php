@@ -11,13 +11,9 @@
 
 <nav x-data="{ open: false }" class="app-nav" aria-label="Navigasi utama">
     <div class="app-nav-inner">
-        <a class="app-brand" href="{{ route('dashboard') }}" aria-label="Sistem Pengajuan ID Card, dashboard">
+        <a class="app-brand" href="{{ route('dashboard') }}" aria-label="PLN Indonesia Power, dashboard">
             <span class="app-brand-mark">
                 <img src="{{ asset(config('mitra.logo')) }}" alt="Logo PLN Indonesia Power">
-            </span>
-            <span class="app-brand-copy">
-                <strong>SISTEM PENGAJUAN ID CARD</strong>
-                <small>Portal Pengajuan dan Penerbitan ID Card</small>
             </span>
         </a>
 
