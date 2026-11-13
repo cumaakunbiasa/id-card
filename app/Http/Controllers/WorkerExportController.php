@@ -16,9 +16,12 @@ class WorkerExportController extends Controller
         );
 
         $filters = $request->validate([
-            'from' => ['nullable', 'date_format:Y-m-d'],
-            'to' => ['nullable', 'date_format:Y-m-d', ...($request->filled('from') ? ['after_or_equal:from'] : [])],
+            'period' => ['required', 'in:range,all'],
+            'from' => ['required_if:period,range', 'nullable', 'date_format:Y-m-d'],
+            'to' => ['required_if:period,range', 'nullable', 'date_format:Y-m-d', 'after_or_equal:from'],
         ]);
+
+        $useDateRange = $filters['period'] === 'range';
 
         if (!class_exists(\ZipArchive::class)) {
             return back()->withErrors([
@@ -83,12 +86,10 @@ class WorkerExportController extends Controller
         })();
 
         $fileBase = 'mitra-kerja-' . now()->format('Ymd-His');
-        if (($filters['from'] ?? null) && ($filters['to'] ?? null)) {
+        if ($useDateRange) {
             $fileBase .= '-' . $filters['from'] . '-sampai-' . $filters['to'];
-        } elseif ($filters['from'] ?? null) {
-            $fileBase .= '-mulai-' . $filters['from'];
-        } elseif ($filters['to'] ?? null) {
-            $fileBase .= '-sampai-' . $filters['to'];
+        } else {
+            $fileBase .= '-semua-periode';
         }
 
         return response()->download(
