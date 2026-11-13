@@ -14,21 +14,50 @@
         <section class="ui-card" style="margin-bottom:16px">
             <form method="GET" action="{{ route('admin.workers.export') }}">
                 <h2 class="ui-section-title">Ekspor Data ke Excel</h2>
+                <div style="margin-bottom:16px">
+                    <label class="ui-label" for="export-period">Periode ekspor</label>
+                    <select id="export-period" name="period" class="ui-input" required>
+                        <option value="range" @selected(old('period', request('period', 'range')) === 'range')>Rentang tanggal tertentu</option>
+                        <option value="all" @selected(old('period', request('period', 'range')) === 'all')>Semua periode (dari awal sampai akhir)</option>
+                    </select>
+                </div>
                 <div class="ui-detail-grid">
                     <div>
                         <label class="ui-label" for="export-from">Didaftarkan mulai tanggal</label>
-                        <input id="export-from" name="from" type="date" value="{{ old('from', request('from')) }}" class="ui-input">
+                        <input id="export-from" name="from" type="date" value="{{ old('from', request('from')) }}" class="ui-input" data-export-date>
                     </div>
                     <div>
                         <label class="ui-label" for="export-to">Didaftarkan sampai tanggal</label>
-                        <input id="export-to" name="to" type="date" value="{{ old('to', request('to')) }}" class="ui-input">
+                        <input id="export-to" name="to" type="date" value="{{ old('to', request('to')) }}" class="ui-input" data-export-date>
                     </div>
                 </div>
-                <p class="ui-section-note">Kosongkan tanggal untuk mengekspor seluruh data. Rentang dihitung berdasarkan tanggal pendaftaran, termasuk seluruh data pada tanggal akhir.</p>
+                <p class="ui-section-note">Pilih Rentang Tanggal untuk menentukan tanggal awal dan akhir. Pilih Semua Periode untuk mengekspor seluruh data dari pendaftaran paling awal hingga data terbaru.</p>
                 <div class="ui-approval-actions">
                     <button type="submit" class="ui-button ui-button-primary">Ekspor Excel</button>
                 </div>
             </form>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const periodSelect = document.getElementById('export-period');
+                    const dateInputs = document.querySelectorAll('[data-export-date]');
+
+                    function updateExportDateFields() {
+                        const useDateRange = periodSelect.value === 'range';
+
+                        dateInputs.forEach(function (input) {
+                            input.disabled = !useDateRange;
+                            input.required = useDateRange;
+
+                            if (!useDateRange) {
+                                input.value = '';
+                            }
+                        });
+                    }
+
+                    periodSelect.addEventListener('change', updateExportDateFields);
+                    updateExportDateFields();
+                });
+            </script>
         </section>
         @if ($errors->any())
             <div class="ui-alert ui-alert-error" role="alert">@foreach ($errors->all() as $error)<p>{{ $error }}</p>@endforeach</div>
