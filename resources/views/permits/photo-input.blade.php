@@ -16,7 +16,7 @@
         </div>
         <img x-show="preview" x-cloak :src="preview" alt="Pratinjau foto yang dipilih" style="width:100px;height:130px;object-fit:cover;border-radius:10px">
     </div>
-    <aside class="photo-requirements" style="text-align:left">
+    <aside class="photo-requirements" style="text-align:left;font-weight:700">
         <h3 style="margin:0 0 7px;font-size:13px;line-height:1.5;font-weight:700;color:#1f2937;text-align:left;width:100%">* Ketentuan Foto</h3>
         <ul style="margin:0;padding:0;list-style:none;display:grid;gap:4px;color:#374151;text-align:left;font-size:12px;line-height:1.6">
             <li>- Harus menggunakan helm dan wearpack/rompi.</li>
